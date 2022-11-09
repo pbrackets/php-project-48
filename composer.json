@@ -1,0 +1,23 @@
+{
+    "name": "hexlet/code",
+    "description": "secondproject",
+    "type": "project",
+    "require": {
+        "docopt/docopt": "^1.0"
+    },
+    "license": "MIT",
+    "bin": [
+        "bin/gendiff"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "aelita",
+            "email": "ai2shop@yandex.ru"
+        }
+    ]
+}

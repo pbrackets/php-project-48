@@ -2,6 +2,17 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use function Differ\Differ\genDiff;
+
+$autoloadPath1 = __DIR__ . '/../../../autoload.php';
+$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
+
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1;
+} else {
+    require_once $autoloadPath2;
+}
+
 $doc = <<<DOC
 Generate diff
 
@@ -16,15 +27,24 @@ Options:
 
 DOC;
 
-$args = Docopt::handle($doc, ['version' =>'Aelitka gendiff v1.0']);
-foreach ($args as $k=>$v)
-    echo $k.': '.json_encode($v).PHP_EOL;
+// проверяем существование файлов и записываем в переменные абсолютные пути до файлов
+$args = Docopt::handle($doc);
 
-// $args = Docopt::handle($doc);
+//var_dump($args);
+
+$firstFileName = realpath($args["<firstFile>"]);
+$secondFileName = realpath($args["<secondFile>"]);
 
 
-// $handler = new \Docopt\Handler(array(
-//     'help'=>true,
-//     'optionsFirst'=>false,
-// ));
-// $handler->handle($doc, $argv);
+if (!file_exists($firstFileName)) {
+    echo "Файл $firstFileName не существует\n";
+    exit;
+}
+
+if (!file_exists($secondFileName)) {
+    echo "Файл $secondFileName не существует\n";
+    exit;
+}
+
+
+echo "Программа работает\n";

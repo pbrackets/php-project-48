@@ -1,5 +1,8 @@
 #!/usr/bin/env php
 <?php
+namespace Differ;
+use function Differ\Differ\Diff;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 
@@ -26,69 +29,30 @@ Options:
 
 DOC;
 
-// проверяем существование файлов и записываем в переменные абсолютные пути до файлов
-$args   = Docopt::handle($doc);
-$format = $args['--format'];
 
+
+$args = \Docopt::handle($doc, array('version' => "0.0.1"));
+$format = $args['--format'];
+//var_dump($format);
+// проверяем существование файлов и записываем в переменные абсолютные пути до файлов
 $firstFileName  = realpath($args["<firstFile>"]);
 $secondFileName = realpath($args["<secondFile>"]);
 
-if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
-    echo "Неверные пути до файлов\n";
-}
-//прочитать содержимое файлов в переменные
-$firstFileContent  = file_get_contents($firstFileName);
-$secondFileContent = file_get_contents($secondFileName);
+//['<firstFile>' => $firstFileName, '<secondFile>' => $secondFileName, '--format' => $format] = $args;
 
-//преобразовать содержимое файлов в массив и присвоить в переменные
-$firstArray  = json_decode($firstFileContent, true);
-$secondArray = json_decode($secondFileContent, true);
-//var_dump($firstArray);
-//var_dump($secondArray);
-$result = [];
-foreach ($firstArray as $key => $value) {
-    if (array_key_exists($key, $secondArray)) {
-        if ($value === $secondArray[$key]) {
-            $result ['  '.$key] = $value;
+$result = Diff($firstFileName, $secondFileName);
+
+// вывод
+if($format === 'stylish') {
+    foreach ($result as $key => $value) {
+        if (is_bool($value) && $value === true) {
+            echo "$key: true\n";
+        } elseif (is_bool($value) && $value === false) {
+            echo "$key: false\n";
         } else {
-            $result ['- '.$key] = $value;
-            $result ['+ '.$key] = $secondArray[$key];
+            echo "$key: $value\n";
         }
-    } else {
-        $result ['- '.$key] = $value;
     }
+} else {
+    echo 'Неизвестный формат: ' . $format;
 }
-
-foreach ($secondArray as $skey => $svalue) {
-    if (!array_key_exists($skey, $firstArray)) {
-        $result ['+ '.$skey] = $svalue;
-    }
-}
-function cmt($a, $b){
-    $a = trim($a, '+ -');
-    $b = trim($b, '+ -');
-    if ($a == $b) { // если 2 значения массива равны
-        return 0; // вернем 0
-    }
-    return ($a < $b) ? -1 : 1;
-}
-//сортировка по ключам
-uksort($result, "cmt");
-foreach ($result as $key => $value) {
-    if (is_bool($value) && $value === true) {
-        echo "$key: true\n";
-    } elseif (is_bool($value) && $value === false) {
-        echo "$key: false\n";
-    } else {
-        echo "$key: $value\n";
-    }
-}
-
-//$res = json_encode($result);
-//$trimmed = trim("- timeout", '+ -');
-// $res = json_encode($result);
-// var_dump($res);
-// return $res;
-//var_dump($trimmed);
-
-//return $result;

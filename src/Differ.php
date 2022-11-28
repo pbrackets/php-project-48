@@ -2,9 +2,8 @@
 
 namespace Differ\Differ;
 
-
-
-function Diff($firstFileName, $secondFileName) {
+function Diff($firstFileName, $secondFileName)
+{
     if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
         echo "Неверные пути до файлов\n";
     }
@@ -21,26 +20,26 @@ function Diff($firstFileName, $secondFileName) {
     foreach ($firstArray as $key => $value) {
         if (array_key_exists($key, $secondArray)) {
             if ($value === $secondArray[$key]) {
-                $result ['  '.$key] = $value;
+                $result ['  ' . $key] = $value;
             } else {
-                $result ['- '.$key] = $value;
-                $result ['+ '.$key] = $secondArray[$key];
+                $result ['- ' . $key] = $value;
+                $result ['+ ' . $key] = $secondArray[$key];
             }
         } else {
-            $result ['- '.$key] = $value;
+            $result ['- ' . $key] = $value;
         }
     }
 
     foreach ($secondArray as $skey => $svalue) {
         if (!array_key_exists($skey, $firstArray)) {
-            $result ['+ '.$skey] = $svalue;
+            $result ['+ ' . $skey] = $svalue;
         }
     }
 
 
 
     //сортировка по ключам
-    uksort($result, function ($a, $b){
+    uksort($result, function ($a, $b) {
         $a = trim($a, '+ -');
         $b = trim($b, '+ -');
         if ($a == $b) { // если 2 значения массива равны
@@ -50,6 +49,4 @@ function Diff($firstFileName, $secondFileName) {
     });
 
     return $result;
-
 }
-

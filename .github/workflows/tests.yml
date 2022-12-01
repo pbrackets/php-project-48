@@ -1,0 +1,39 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Setup
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: phpcs
+
+      - name: install
+        run: make install
+
+      - name: linter
+        run: make lint
+
+      - name: testDiffer
+        run: make test
+
+      - name: code-coverage
+        uses: paambaati/codeclimate-action@v2.7.5
+
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make test-coverage
+          coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
+          debug: true

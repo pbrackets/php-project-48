@@ -12,7 +12,7 @@ function Diff($firstFileName, $secondFileName)
     $secondFileContent = file_get_contents($secondFileName);
 
 //преобразовать содержимое файлов в массив и присвоить в переменные
-    $firstArray  = json_decode($firstFileContent, true);
+    $firstArray  =json_decode($firstFileContent, true);
     $secondArray = json_decode($secondFileContent, true);
 //var_dump($firstArray);
 //var_dump($secondArray);

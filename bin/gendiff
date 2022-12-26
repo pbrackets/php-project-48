@@ -1,7 +1,8 @@
 #!/usr/bin/env php
 <?php
 namespace Differ;
-use function Differ\Differ\Diff;
+
+use function Differ\Diff;
 
 require_once __DIR__.'/../vendor/autoload.php';
 

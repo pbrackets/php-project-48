@@ -1,21 +1,28 @@
 <?php
 
-namespace Differ\Differ;
+namespace Differ;
 
-function Diff($firstFileName, $secondFileName)
+use function Parsers\parse;
+
+function Diff($firstFileName, $secondFileName): array
 {
     if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
         echo "Неверные пути до файлов\n";
+        return [];
     }
 //прочитать содержимое файлов в переменные
     $firstFileContent  = file_get_contents($firstFileName);
     $secondFileContent = file_get_contents($secondFileName);
 
+    $firstFileExtension = pathinfo($firstFileName, PATHINFO_EXTENSION);
+    $secondFileExtension = pathinfo($secondFileName, PATHINFO_EXTENSION);
+
 //преобразовать содержимое файлов в массив и присвоить в переменные
-    $firstArray  =json_decode($firstFileContent, true);
-    $secondArray = json_decode($secondFileContent, true);
-//var_dump($firstArray);
-//var_dump($secondArray);
+
+    $firstArray  = parse($firstFileContent, $firstFileExtension);
+    $secondArray = parse($secondFileContent, $secondFileExtension);
+    //var_dump($firstArray);
+    //var_dump($secondArray);
     $result = [];
     foreach ($firstArray as $key => $value) {
         if (array_key_exists($key, $secondArray)) {
@@ -30,9 +37,9 @@ function Diff($firstFileName, $secondFileName)
         }
     }
 
-    foreach ($secondArray as $skey => $svalue) {
-        if (!array_key_exists($skey, $firstArray)) {
-            $result ['+ ' . $skey] = $svalue;
+    foreach ($secondArray as $key1 => $value1) {
+        if (!array_key_exists($key1, $firstArray)) {
+            $result ['+ ' . $key1] = $value1;
         }
     }
 

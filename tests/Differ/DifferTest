@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+
+namespace Differ;
+
+    use PHPUnit\Framework\TestCase;
+
+    use function Differ\Differ\Diff;
+
+    class DifferTest extends TestCase
+    {
+        public function testDifferJson($path1, $path2): void
+        {
+            $path1 = __DIR__ . "/tests/fixtures/first.json";
+            $path2 = __DIR__ . "/tests/fixtures/second.json";
+            $expected = file_get_contents("tests/fixtures/TestResultJson.txt");
+            $this->assertEquals($expected, Diff($path1, $path2));
+            echo "Tests passed!";
+        }
+
+        public function testDifferYml($path1, $path2): void
+        {
+            $path1 = __DIR__ . "/tests/fixtures/first.yml";
+            $path2 = __DIR__ . "/tests/fixtures/second.yml";
+            $expected = file_get_contents("tests/fixtures/TestResultYml.txt");
+            $this->assertEquals($expected, Diff($path1, $path2));
+            echo "Tests passed!";
+        }
+    }
+

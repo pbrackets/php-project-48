@@ -8,5 +8,9 @@
 Аскинема с примером работы пакета.
 https://asciinema.org/connect/364810be-f1af-4c54-9514-6877d52984a3
 
+Аскинема. Сравнение плоских файлов (yaml)
+https://asciinema.org/a/Wa0vGVqPCvDG68nztsUCW21W9
+
+
 
 

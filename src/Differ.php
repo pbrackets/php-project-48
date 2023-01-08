@@ -24,6 +24,7 @@ function Diff($firstFileName, $secondFileName): array
     //var_dump($firstArray);
     //var_dump($secondArray);
     $result = [];
+
     foreach ($firstArray as $key => $value) {
         if (array_key_exists($key, $secondArray)) {
             if ($value === $secondArray[$key]) {
@@ -42,8 +43,6 @@ function Diff($firstFileName, $secondFileName): array
             $result ['+ ' . $key1] = $value1;
         }
     }
-
-
 
     //сортировка по ключам
     uksort($result, function ($a, $b) {

@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
-namespace Differ;
 
 use function Differ\Diff;
+use function PHPUnit\Framework\stringContains;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -44,16 +44,10 @@ $secondFileName = realpath($args["<secondFile>"]);
 $result = Diff($firstFileName, $secondFileName);
 
 // вывод
+
+
 if($format === 'stylish') {
-    foreach ($result as $key => $value) {
-        if (is_bool($value) && $value === true) {
-            echo "$key: true\n";
-        } elseif (is_bool($value) && $value === false) {
-            echo "$key: false\n";
-        } else {
-            echo "$key: $value\n";
-        }
-    }
+    echo \Formatters\Stylish\PrintResult($result, 0);
 } else {
     echo 'Неизвестный формат: ' . $format;
 }

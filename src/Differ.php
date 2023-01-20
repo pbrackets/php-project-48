@@ -4,31 +4,15 @@ namespace Differ;
 
 use function Parsers\parse;
 
-function Diff($firstFileName, $secondFileName): array
+function buildTree(array $firstArray, array $secondArray): array
 {
-    if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
-        echo "Неверные пути до файлов\n";
-        return [];
-    }
-//прочитать содержимое файлов в переменные
-    $firstFileContent  = file_get_contents($firstFileName);
-    $secondFileContent = file_get_contents($secondFileName);
-
-    $firstFileExtension = pathinfo($firstFileName, PATHINFO_EXTENSION);
-    $secondFileExtension = pathinfo($secondFileName, PATHINFO_EXTENSION);
-
-//преобразовать содержимое файлов в массив и присвоить в переменные
-
-    $firstArray  = parse($firstFileContent, $firstFileExtension);
-    $secondArray = parse($secondFileContent, $secondFileExtension);
-    //var_dump($firstArray);
-    //var_dump($secondArray);
     $result = [];
-
     foreach ($firstArray as $key => $value) {
         if (array_key_exists($key, $secondArray)) {
             if ($value === $secondArray[$key]) {
-                $result ['  ' . $key] = $value;
+                $result [' ' . $key] = $value;
+            } elseif (is_array($firstArray[$key]) && is_array($secondArray[$key])) {
+                $result [$key] = buildTree($firstArray[$key], $secondArray[$key]);
             } else {
                 $result ['- ' . $key] = $value;
                 $result ['+ ' . $key] = $secondArray[$key];
@@ -44,6 +28,9 @@ function Diff($firstFileName, $secondFileName): array
         }
     }
 
+    // if (is_array($key) && is_array($key1)) {
+    //     return buildTree($firstArray[$key], $secondArray[$key]);
+    // }
     //сортировка по ключам
     uksort($result, function ($a, $b) {
         $a = trim($a, '+ -');
@@ -56,3 +43,28 @@ function Diff($firstFileName, $secondFileName): array
 
     return $result;
 }
+
+function Diff($firstFileName, $secondFileName): array
+{
+    if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
+        echo "Неверные пути до файлов\n";
+        return [];
+    }
+//прочитать содержимое файлов в переменные
+    $firstFileContent  = file_get_contents($firstFileName);
+    $secondFileContent = file_get_contents($secondFileName);
+    $firstFileExtension = pathinfo($firstFileName, PATHINFO_EXTENSION);
+    $secondFileExtension = pathinfo($secondFileName, PATHINFO_EXTENSION);
+
+//преобразовать содержимое файлов в массив и присвоить в переменные
+
+    $firstArray  = parse($firstFileContent, $firstFileExtension);
+    $secondArray = parse($secondFileContent, $secondFileExtension);
+    //var_dump($firstArray);
+    //var_dump($secondArray);
+
+    $tree = buildTree($firstArray, $secondArray);
+    //$formatedTree = parse($tree, $type);
+    return $tree;
+}
+

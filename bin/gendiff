@@ -47,7 +47,7 @@ $result = Diff($firstFileName, $secondFileName);
 
 
 if($format === 'stylish') {
-    echo \Formatters\Stylish\PrintResult($result, 0);
+    echo \Formatters\Stylish\PrintResult($result);
 } else {
     echo 'Неизвестный формат: ' . $format;
 }

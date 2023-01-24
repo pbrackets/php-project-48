@@ -10,7 +10,7 @@ function buildTree(array $firstArray, array $secondArray): array
     foreach ($firstArray as $key => $value) {
         if (array_key_exists($key, $secondArray)) {
             if ($value === $secondArray[$key]) {
-                $result [' ' . $key] = $value;
+                $result [$key] = $value;
             } elseif (is_array($firstArray[$key]) && is_array($secondArray[$key])) {
                 $result [$key] = buildTree($firstArray[$key], $secondArray[$key]);
             } else {
@@ -31,6 +31,7 @@ function buildTree(array $firstArray, array $secondArray): array
     // if (is_array($key) && is_array($key1)) {
     //     return buildTree($firstArray[$key], $secondArray[$key]);
     // }
+
     //сортировка по ключам
     uksort($result, function ($a, $b) {
         $a = trim($a, '+ -');
@@ -40,7 +41,6 @@ function buildTree(array $firstArray, array $secondArray): array
         }
         return ($a < $b) ? -1 : 1;
     });
-
     return $result;
 }
 

@@ -2,11 +2,20 @@
 
 namespace Formatters\Stylish;
 
-function PrintResult($data, $level = 0): string
+function PrintResult($array): string
+{
+    return "{\n" . PrintResultRecursive($array) . "}\n";
+}
+
+function PrintResultRecursive($data, $level = 0): string
 {
     $result = '';
-    $prefix = str_repeat("    ", $level);
+    $prefix = str_repeat(" ", 4 * ($level + 1) - 2);
     foreach ($data as $key => $value) {
+        if (substr($key, 0, 1) !== '-' && substr($key, 0, 1) !== '+') {
+            $key = '  ' . $key;
+        }
+
         if (is_bool($value) && $value === true) {
             $result .= "{$prefix}{$key}: true\n";
         } elseif (is_bool($value) && $value === false) {
@@ -16,10 +25,10 @@ function PrintResult($data, $level = 0): string
         } elseif (!is_array($value)) {
             $result .= "{$prefix}{$key}: $value\n";
         } elseif (is_array($value)) {
-            $data = PrintResult($value, $level + 1);
-
-            $result .= "{$prefix}{$key}: {\n" . trim($data, "\n") . "\n{$prefix}}\n";
+            $data = PrintResultRecursive($value, $level + 1);
+            $result .= "{$prefix}{$key}: {\n" . trim($data, "\n") . "\n{$prefix}  }\n";
         }
     }
+
     return $result;
 }

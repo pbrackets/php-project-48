@@ -26,11 +26,19 @@ namespace Differ;
             $this->assertEquals($expected, Diff($path1, $path2));
             echo "Tests passed!";
         }
-        public function testDifferRecursion($path1, $path2): void
+        public function testDifferStylish($path1, $path2): void
         {
             $path1 = __DIR__ . "/tests/fixtures/file1.json";
             $path2 = __DIR__ . "/tests/fixtures/file2.json";
-            $expected = file_get_contents("tests/fixtures/TestResulRecursion.txt");
+            $expected = file_get_contents("tests/fixtures/CorrectStylish.txt");
+            $this->assertEquals($expected, Diff($path1, $path2));
+            echo "Tests passed!";
+        }
+        public function testDifferPlain($path1, $path2): void
+        {
+            $path1 = __DIR__ . "/tests/fixtures/file1.json";
+            $path2 = __DIR__ . "/tests/fixtures/file2.json";
+            $expected = file_get_contents("tests/fixtures/CorrectPlain.txt");
             $this->assertEquals($expected, Diff($path1, $path2));
             echo "Tests passed!";
         }

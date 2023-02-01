@@ -3,6 +3,7 @@
 namespace Differ;
 
 use function Parsers\parse;
+use function Format\Parser\parseFormat;
 
 function buildTree(array $firstArray, array $secondArray): array
 {
@@ -44,7 +45,7 @@ function buildTree(array $firstArray, array $secondArray): array
     return $result;
 }
 
-function Diff($firstFileName, $secondFileName): array
+function Diff($firstFileName, $secondFileName, string $format = 'stylish'): array
 {
     if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
         echo "Неверные пути до файлов\n";
@@ -64,7 +65,7 @@ function Diff($firstFileName, $secondFileName): array
     //var_dump($secondArray);
 
     $tree = buildTree($firstArray, $secondArray);
-    //$formatedTree = parse($tree, $type);
-    return $tree;
+    $formatedTree = parseFormat($format, $tree);
+    return $formatedTree;
 }
 

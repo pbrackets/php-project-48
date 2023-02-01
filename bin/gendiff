@@ -41,13 +41,15 @@ $secondFileName = realpath($args["<secondFile>"]);
 
 //['<firstFile>' => $firstFileName, '<secondFile>' => $secondFileName, '--format' => $format] = $args;
 
-$result = Diff($firstFileName, $secondFileName);
-
+$result = Diff($firstFileName, $secondFileName, $format);
+var_dump($result);
 // вывод
 
 
 if($format === 'stylish') {
     echo \Formatters\Stylish\PrintResult($result);
+} elseif ($format === 'plain') {
+    echo \Formatters\Plain\PrintResult($result);
 } else {
     echo 'Неизвестный формат: ' . $format;
 }

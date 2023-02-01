@@ -4,10 +4,10 @@ namespace Formatters\Stylish;
 
 function PrintResult($array): string
 {
-    return "{\n" . PrintResultRecursive($array) . "}\n";
+    return "{\n" . PrintResultStylish($array) . "}\n";
 }
 
-function PrintResultRecursive($data, $level = 0): string
+function PrintResultStylish($data, $level = 0): string
 {
     $result = '';
     $prefix = str_repeat(" ", 4 * ($level + 1) - 2);
@@ -25,10 +25,11 @@ function PrintResultRecursive($data, $level = 0): string
         } elseif (!is_array($value)) {
             $result .= "{$prefix}{$key}: $value\n";
         } elseif (is_array($value)) {
-            $data = PrintResultRecursive($value, $level + 1);
+            $data = PrintResultStylish($value, $level + 1);
             $result .= "{$prefix}{$key}: {\n" . trim($data, "\n") . "\n{$prefix}  }\n";
         }
     }
 
     return $result;
 }
+

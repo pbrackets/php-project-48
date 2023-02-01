@@ -14,7 +14,9 @@
         "files": [
             "src/Differ.php",
             "src/Parsers.php",
-            "src/Formatters/Stylish.php"
+            "src/FormatParser.php",
+            "src/Formatters/Stylish.php",
+            "src/Formatters/Plain.php"
         ]
     },
     "authors": [

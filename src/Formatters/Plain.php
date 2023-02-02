@@ -2,44 +2,56 @@
 
 namespace Formatters\Plain;
 
-function PrintResult($array): string
+function formatPlainValue($value): string
 {
-    return PrintResultPlain($array);
+    if (is_bool($value)) {
+        return $value ? 'true' : 'false';
+    }
+    if (is_null($value)) {
+
+        return 'null';
+    }
+    if (is_array($value)) {
+        return '[complex value]';
+    }
+    return "'{$value}'";
 }
 
-function PrintResultPlain($data, $level = 0, $path = ''): string
+function PrintResult($array): string
 {
+    return PrintResultPlain($array) . "\n";
+}
+
+function PrintResultPlain(array $data, $path = ''): string
+{
+    $result = '';
+
     foreach ($data as $key => $value) {
-        $result = '';
-
-
+        //$fullPath = "{$path}{$data['key']}";
         if (str_starts_with($key, '+')) {
-            $newValue = $value;
-            $newKeyPlus = trim($key, "+ ");
-            if (!is_array($value)) {
-                $result .= "Property '{$newKeyPlus}' was added with value: {$newValue}";
+            $newValue = formatPlainValue($value);
+            $baseKey  = trim($key, "+ ");
+            $fullPath = "{$path}{$baseKey}";
+            $minusKey = '- ' . $baseKey;
+            if (array_key_exists($minusKey, $data)) {
+                $oldValue = formatPlainValue($data[$minusKey]);
+                $result .= "Property '{$fullPath}' was updated. From {$oldValue} to {$newValue}\n";
             } else {
-                $result .= "Property '{$newKeyPlus}' was added with value: [complex value]";
+                $result .= "Property '{$fullPath}' was added with value: {$newValue}\n";
             }
         } elseif (str_starts_with($key, '-')) {
-            $oldValue = $value;
-            $newKeyMinus = trim($key, "- ");
-            if (!is_array($value)) {
-                $result .= "Property '{$newKeyPlus}' was removed";
-            } else {
-                $result .= "Property '{$newKeyPlus}' was updated. From [complex value] to $newKeyMinus";
+            $baseKey  = trim($key, "- ");
+            $fullPath = "{$path}{$baseKey}";
+            $plusKey  = '+ ' . $baseKey;
+            if (!array_key_exists($plusKey, $data)) {
+                $result .= "Property '{$fullPath}' was removed\n";
             }
-        } elseif ($newKeyPlus === $newKeyMinus) {
-            $result .= "Property '{$newKeyMinus}' was updated. From {$oldValue} to {$newValue}";
+        } else {
+            if (is_array($value)) {
+                $fullPath = "{$path}{$key}.";
+                $result .= PrintResultPlain($value, $fullPath);
+            }
+        }
     }
     return $result;
 }
-
-// if (is_bool($value) && $value === true) {
-//     $value = true;
-// } elseif (is_bool($value) && $value === false) {
-//     $value = false;
-// } elseif (is_null($value) && $value === null) {
-//     $value = null;
-// }
-

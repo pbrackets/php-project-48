@@ -42,7 +42,7 @@ $secondFileName = realpath($args["<secondFile>"]);
 //['<firstFile>' => $firstFileName, '<secondFile>' => $secondFileName, '--format' => $format] = $args;
 
 $result = Diff($firstFileName, $secondFileName, $format);
-var_dump($result);
+//var_dump($result);
 // вывод
 
 

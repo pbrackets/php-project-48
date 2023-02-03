@@ -5,7 +5,7 @@ namespace Differ;
 
     use PHPUnit\Framework\TestCase;
 
-    use function Differ\Differ\Diff;
+    use function \Differ\Diff;
 
     class DifferTest extends TestCase
     {
@@ -31,7 +31,7 @@ namespace Differ;
             $path1 = __DIR__ . "/tests/fixtures/file1.json";
             $path2 = __DIR__ . "/tests/fixtures/file2.json";
             $expected = file_get_contents("tests/fixtures/CorrectStylish.txt");
-            $this->assertEquals($expected, Diff($path1, $path2));
+            $this->assertEquals($expected, Diff($path1, $path2, "stylish"));
             echo "Tests passed!";
         }
         public function testDifferPlain($path1, $path2): void
@@ -39,10 +39,16 @@ namespace Differ;
             $path1 = __DIR__ . "/tests/fixtures/file1.json";
             $path2 = __DIR__ . "/tests/fixtures/file2.json";
             $expected = file_get_contents("tests/fixtures/CorrectPlain.txt");
-            $this->assertEquals($expected, Diff($path1, $path2));
+            $this->assertEquals($expected, Diff($path1, $path2, "plain"));
+            echo "Tests passed!";
+        }
+        public function testDifferJson($path1, $path2): void
+        {
+            $path1 = __DIR__ . "/tests/fixtures/file1.json";
+            $path2 = __DIR__ . "/tests/fixtures/file2.json";
+            $expected = file_get_contents("tests/fixtures/CorrectJson.txt");
+            $this->assertEquals($expected, Diff($path1, $path2, "json"));
             echo "Tests passed!";
         }
 
-
     }
-

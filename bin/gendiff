@@ -50,6 +50,8 @@ if($format === 'stylish') {
     echo \Formatters\Stylish\PrintResult($result);
 } elseif ($format === 'plain') {
     echo \Formatters\Plain\PrintResult($result);
+} elseif ($format === 'json') {
+    echo \Formatters\Json\PrintResult($result);
 } else {
     echo 'Неизвестный формат: ' . $format;
 }

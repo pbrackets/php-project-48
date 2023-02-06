@@ -41,17 +41,6 @@ $secondFileName = realpath($args["<secondFile>"]);
 
 //['<firstFile>' => $firstFileName, '<secondFile>' => $secondFileName, '--format' => $format] = $args;
 
-$result = genDiff($firstFileName, $secondFileName, $format);
+$diff = genDiff($firstFileName, $secondFileName, $format);
 //var_dump($result);
 // вывод
-
-
-if($format === 'stylish') {
-    echo \Formatters\Stylish\PrintResult($result);
-} elseif ($format === 'plain') {
-    echo \Formatters\Plain\PrintResult($result);
-} elseif ($format === 'json') {
-    echo \Formatters\Json\PrintResult($result);
-} else {
-    echo 'Неизвестный формат: ' . $format;
-}

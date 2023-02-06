@@ -3,6 +3,7 @@
 namespace Differ\Differ;
 
 use function Parsers\parse;
+use function Formatters\format;
 
 function buildTree(array $firstArray, array $secondArray): array
 {
@@ -44,11 +45,11 @@ function buildTree(array $firstArray, array $secondArray): array
     return $result;
 }
 
-function genDiff($firstFileName, $secondFileName, string $format = 'stylish'): array
+function genDiff($firstFileName, $secondFileName, string $format = 'stylish'): string
 {
     if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
         echo "Неверные пути до файлов\n";
-        return [];
+        //return [];
     }
 //прочитать содержимое файлов в переменные
     $firstFileContent  = file_get_contents($firstFileName);
@@ -63,5 +64,6 @@ function genDiff($firstFileName, $secondFileName, string $format = 'stylish'): a
     //var_dump($firstArray);
     //var_dump($secondArray);
 
-    return buildTree($firstArray, $secondArray);
+    $tree = buildTree($firstArray, $secondArray);
+    return format($tree, $format);
 }

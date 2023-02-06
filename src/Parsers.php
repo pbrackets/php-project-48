@@ -12,7 +12,6 @@ function parse($data, string $type)
         case 'yml':
         case 'yaml':
             return Yaml::parse($data);
-            return Yaml::parse($data);
         default:
             echo ("Неизвестное расширение");
     }

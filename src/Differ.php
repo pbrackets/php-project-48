@@ -3,7 +3,6 @@
 namespace Differ;
 
 use function Parsers\parse;
-//use function Format\Parser\parseFormat;
 
 function buildTree(array $firstArray, array $secondArray): array
 {
@@ -64,8 +63,5 @@ function Diff($firstFileName, $secondFileName, string $format = 'stylish'): arra
     //var_dump($firstArray);
     //var_dump($secondArray);
 
-    $tree = buildTree($firstArray, $secondArray);
-    //$formatedTree = parseFormat($format, $tree);
-    return $tree;
+    return buildTree($firstArray, $secondArray);
 }
-

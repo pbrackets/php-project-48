@@ -32,4 +32,3 @@ function PrintResultStylish($data, $level = 0): string
 
     return $result;
 }
-

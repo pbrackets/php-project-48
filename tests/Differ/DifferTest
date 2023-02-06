@@ -42,7 +42,7 @@ namespace Differ;
             $this->assertEquals($expected, Diff($path1, $path2, "plain"));
             echo "Tests passed!";
         }
-        public function testDifferJson($path1, $path2): void
+        public function testDifferJsonFormat($path1, $path2): void
         {
             $path1 = __DIR__ . "/tests/fixtures/file1.json";
             $path2 = __DIR__ . "/tests/fixtures/file2.json";

@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ;
+namespace Differ\Differ;
 
 use function Parsers\parse;
 
@@ -44,7 +44,7 @@ function buildTree(array $firstArray, array $secondArray): array
     return $result;
 }
 
-function Diff($firstFileName, $secondFileName, string $format = 'stylish'): array
+function genDiff($firstFileName, $secondFileName, string $format = 'stylish'): array
 {
     if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
         echo "Неверные пути до файлов\n";

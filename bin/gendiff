@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use function Differ\Diff;
+use function Differ\Differ\genDiff;
 use function PHPUnit\Framework\stringContains;
 
 require_once __DIR__.'/../vendor/autoload.php';
@@ -41,7 +41,7 @@ $secondFileName = realpath($args["<secondFile>"]);
 
 //['<firstFile>' => $firstFileName, '<secondFile>' => $secondFileName, '--format' => $format] = $args;
 
-$result = Diff($firstFileName, $secondFileName, $format);
+$result = genDiff($firstFileName, $secondFileName, $format);
 //var_dump($result);
 // вывод
 

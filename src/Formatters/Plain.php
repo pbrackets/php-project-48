@@ -8,13 +8,12 @@ function formatPlainValue($value): string
         return $value ? 'true' : 'false';
     }
     if (is_null($value)) {
-
         return 'null';
     }
     if (is_array($value)) {
         return '[complex value]';
     }
-    return "'{$value}'";
+    return '{$value}';
 }
 
 function PrintResult($array): string
@@ -31,7 +30,7 @@ function PrintResultPlain(array $data, $path = ''): string
         if (str_starts_with($key, '+')) {
             $newValue = formatPlainValue($value);
             $baseKey  = trim($key, "+ ");
-            $fullPath = "{$path}{$baseKey}";
+            $fullPath = "{$path} {$baseKey}";
             $minusKey = '- ' . $baseKey;
             if (array_key_exists($minusKey, $data)) {
                 $oldValue = formatPlainValue($data[$minusKey]);

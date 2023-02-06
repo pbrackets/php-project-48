@@ -37,16 +37,16 @@ function PrintResultPlain(array $data, $path = ''): string
             $minusKey = '- ' . $baseKey;
             if (array_key_exists($minusKey, $data)) {
                 $oldValue = formatPlainValue($data[$minusKey]);
-                $result .= "Property '{$fullPath}' was updated. From {$oldValue} to {$newValue}";
+                $result .= "Property '{$fullPath}' was updated. From {$oldValue} to {$newValue}\n";
             } else {
-                $result .= "Property '{$fullPath}' was added with value: {$newValue}";
+                $result .= "Property '{$fullPath}' was added with value: {$newValue}\n";
             }
         } elseif (str_starts_with($key, '-')) {
             $baseKey  = trim($key, "- ");
             $fullPath = "{$path}{$baseKey}";
             $plusKey  = '+ ' . $baseKey;
             if (!array_key_exists($plusKey, $data)) {
-                $result .= "Property '{$fullPath}' was removed";
+                $result .= "Property '{$fullPath}' was removed\n";
             }
         } else {
             if (is_array($value)) {

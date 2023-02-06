@@ -9,7 +9,7 @@ use function Formatters\Plain\PrintResultPlain;
 function format(array $tree, string $format)
 {
     if ($format === 'stylish') {
-        return "{\n" . PrintResultStylish($tree) . "}\n";
+        return "{\n" . PrintResultStylish($tree) . "}";
     } elseif ($format === 'plain') {
         return PrintResultPlain($tree) . "\n";
     } elseif ($format === 'json') {

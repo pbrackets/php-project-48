@@ -42,5 +42,6 @@ $secondFileName = realpath($args["<secondFile>"]);
 //['<firstFile>' => $firstFileName, '<secondFile>' => $secondFileName, '--format' => $format] = $args;
 
 $diff = genDiff($firstFileName, $secondFileName, $format);
+echo $diff;
 //var_dump($result);
 // вывод

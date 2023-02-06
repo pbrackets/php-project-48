@@ -13,7 +13,7 @@ function formatPlainValue($value): string
     if (is_array($value)) {
         return '[complex value]';
     }
-    return '{$value}';
+    return "'{$value}'";
 }
 
 function PrintResult($array): string

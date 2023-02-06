@@ -37,7 +37,7 @@ function PrintResultPlain(array $data, $path = ''): string
             $minusKey = '- ' . $baseKey;
             if (array_key_exists($minusKey, $data)) {
                 $oldValue = formatPlainValue($data[$minusKey]);
-                $result .= "Property '{$fullPath}' was updated. From {$oldValue} to {$newValue}\n";
+                $result .= "Property '{$fullPath}' was updated. From '{$oldValue}' to '{$newValue}'\n";
             } else {
                 $result .= "Property '{$fullPath}' was added with value: {$newValue}\n";
             }

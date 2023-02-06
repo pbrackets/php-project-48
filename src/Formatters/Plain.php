@@ -13,6 +13,9 @@ function formatPlainValue($value): string
     if (is_array($value)) {
         return '[complex value]';
     }
+    if (is_numeric($value)) {
+        return "{$value}";
+    }
     return "'{$value}'";
 }
 

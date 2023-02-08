@@ -2,7 +2,7 @@
 
 namespace Formatters\Json;
 
-function PrintResult($array): string
+function PrintResult(array $array): string
 {
     return PrintResultJson($array);
 }

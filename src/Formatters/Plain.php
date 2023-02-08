@@ -2,7 +2,7 @@
 
 namespace Formatters\Plain;
 
-function formatPlainValue($value): string
+function formatPlainValue(mixed $value): string
 {
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
@@ -19,12 +19,12 @@ function formatPlainValue($value): string
     return "'{$value}'";
 }
 
-function PrintResult($array): string
+function PrintResult(array $array): string
 {
     return PrintResultPlain($array) . "\n";
 }
 
-function PrintResultPlain(array $data, $path = ''): string
+function PrintResultPlain(array $data, string $path = ''): string
 {
     $result = '';
 

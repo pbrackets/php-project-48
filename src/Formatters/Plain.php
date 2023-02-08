@@ -55,5 +55,5 @@ function PrintResultPlain(array $data, $path = ''): string
             }
         }
     }
-    return trim($result, "\n");
+    return $result;
 }

@@ -11,7 +11,7 @@ function format(array $tree, string $format)
     if ($format === 'stylish') {
         return "{\n" . PrintResultStylish($tree) . "}";
     } elseif ($format === 'plain') {
-        return PrintResultPlain($tree);
+        return trim(PrintResultPlain($tree), "\n";
     } elseif ($format === 'json') {
         return PrintResultJson($tree);
     } else {

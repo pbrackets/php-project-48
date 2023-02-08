@@ -13,6 +13,6 @@ function parse(mixed $data, string $type): array
         case 'yaml':
             return Yaml::parse($data);
         default:
-            echo ("Неизвестное расширение");
+            die("Неизвестное расширение");
     }
 }

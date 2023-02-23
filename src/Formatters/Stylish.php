@@ -30,7 +30,7 @@ function toString($node, int $level): string
 
 function PrintResultStylish($data, int $level = 0): string
 {
-    $prefix = str_repeat(" ", 4 * ($level + 1) - 2);
+    $prefix = str_repeat(" ", 2 * ($level + 1) - 2);
 
     $callback = function ($acc, $node) use ($prefix, $level) {
         $key  = getKey($node);

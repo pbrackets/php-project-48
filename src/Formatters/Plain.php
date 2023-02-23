@@ -8,6 +8,11 @@ use function Differ\Differ\getValue1;
 use function Differ\Differ\getValue2;
 use function Differ\Differ\getType;
 
+function PrintResultPlain(array $array): string
+{
+    return trim(RecursivePrintResultPlain($array, ''));
+}
+
 function formatPlainValue(mixed $value): string
 {
     if (is_bool($value)) {
@@ -25,7 +30,7 @@ function formatPlainValue(mixed $value): string
     return "'{$value}'";
 }
 
-function PrintResultPlain(array $data, string $path = ''): string
+function RecursivePrintResultPlain(array $data, string $path = ''): string
 {
     $callback = function ($node) use ($path) {
         $key  = getKey($node);
@@ -33,7 +38,7 @@ function PrintResultPlain(array $data, string $path = ''): string
         $fullPath = "{$path}{$key}";
         if ($type === 'nested') {
             $fullPath2 = "{$path}{$key}.";
-            return PrintResultPlain(getChildren($node), $fullPath2);
+            return RecursivePrintResultPlain(getChildren($node), $fullPath2);
         }
         if ($type === 'added') {
             $value1 =  formatPlainValue(getValue1($node));
@@ -47,9 +52,7 @@ function PrintResultPlain(array $data, string $path = ''): string
             $value2 = formatPlainValue(getValue2($node));
             return "Property '{$fullPath}' was updated. From {$value1} to {$value2}\n";
         }
-        if ($type === 'unchanged') {
             return '';
-        }
     };
     $result = array_map($callback, $data);
     return implode('', $result);

@@ -2,6 +2,12 @@
 
 namespace Formatters\Plain;
 
+use function Differ\Differ\getChildren;
+use function Differ\Differ\getKey;
+use function Differ\Differ\getValue1;
+use function Differ\Differ\getValue2;
+use function Differ\Differ\getType;
+
 function formatPlainValue(mixed $value): string
 {
     if (is_bool($value)) {
@@ -19,41 +25,32 @@ function formatPlainValue(mixed $value): string
     return "'{$value}'";
 }
 
-function PrintResult(array $array): string
-{
-    return PrintResultPlain($array) . "\n";
-}
-
 function PrintResultPlain(array $data, string $path = ''): string
 {
-    $result = '';
-
-    foreach ($data as $key => $value) {
-        //$fullPath = "{$path}{$data['key']}";
-        if (str_starts_with($key, '+')) {
-            $newValue = formatPlainValue($value);
-            $baseKey  = trim($key, "+ ");
-            $fullPath = "{$path}{$baseKey}";
-            $minusKey = '- ' . $baseKey;
-            if (array_key_exists($minusKey, $data)) {
-                $oldValue = formatPlainValue($data[$minusKey]);
-                $result .= "Property '{$fullPath}' was updated. From {$oldValue} to {$newValue}\n";
-            } else {
-                $result .= "Property '{$fullPath}' was added with value: {$newValue}\n";
-            }
-        } elseif (str_starts_with($key, '-')) {
-            $baseKey  = trim($key, "- ");
-            $fullPath = "{$path}{$baseKey}";
-            $plusKey  = '+ ' . $baseKey;
-            if (!array_key_exists($plusKey, $data)) {
-                $result .= "Property '{$fullPath}' was removed\n";
-            }
-        } else {
-            if (is_array($value)) {
-                $fullPath = "{$path}{$key}.";
-                $result .= PrintResultPlain($value, $fullPath);
-            }
+    $callback = function ($node) use ($path) {
+        $key  = getKey($node);
+        $type = getType($node);
+        $fullPath = "{$path}{$key}";
+        if ($type === 'nested') {
+            $fullPath2 = "{$path}{$key}.";
+            return PrintResultPlain(getChildren($node), $fullPath2);
         }
-    }
-    return $result;
+        if ($type === 'added') {
+            $value1 =  formatPlainValue(getValue1($node));
+            return "Property '{$fullPath}' was added with value: {$value1}\n";
+        }
+        if ($type === 'removed') {
+            return "Property '{$fullPath}' was removed\n";
+        }
+        if ($type === 'updated') {
+            $value1 = formatPlainValue(getValue1($node));
+            $value2 = formatPlainValue(getValue2($node));
+            return "Property '{$fullPath}' was updated. From {$value1} to {$value2}\n";
+        }
+        if ($type === 'unchanged') {
+            return '';
+        }
+    };
+    $result = array_map($callback, $data);
+    return implode('', $result);
 }

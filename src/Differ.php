@@ -5,51 +5,76 @@ namespace Differ\Differ;
 use function Parsers\parse;
 use function Formatters\format;
 
+function makeLeaf(string $key, string $type, $value1, $value2 = null): array
+{
+    return ['key' => $key, 'type' => $type, 'value1' => $value1, 'value2' => $value2];
+}
+
+function makeNode(string $key, string $type, array $children): array
+{
+    return ['key' => $key, 'type' => $type, 'children' => $children];
+}
+
+function getKey($node)
+{
+    return $node['key'];
+}
+function getValue1($node)
+{
+    return $node['value1'];
+}
+
+function getValue2($node)
+{
+    return $node['value2'];
+}
+function getType($node): string
+{
+    return $node['type'];
+}
+
+function getChildren($node)
+{
+    return $node['children'];
+}
+
 function buildTree(array $firstArray, array $secondArray): array
 {
-    $result = [];
-    foreach ($firstArray as $key => $value) {
-        if (array_key_exists($key, $secondArray)) {
-            if ($value === $secondArray[$key]) {
-                $result [$key] = $value;
-            } elseif (is_array($firstArray[$key]) && is_array($secondArray[$key])) {
-                $result [$key] = buildTree($firstArray[$key], $secondArray[$key]);
-            } else {
-                $result ['- ' . $key] = $value;
-                $result ['+ ' . $key] = $secondArray[$key];
-            }
-        } else {
-            $result ['- ' . $key] = $value;
-        }
-    }
+    $keys1 = array_keys($firstArray);
+    $keys2 = array_keys($secondArray);
+    $keys = array_unique(array_merge($keys1, $keys2));
 
-    foreach ($secondArray as $key1 => $value1) {
-        if (!array_key_exists($key1, $firstArray)) {
-            $result ['+ ' . $key1] = $value1;
-        }
-    }
 
-    // if (is_array($key) && is_array($key1)) {
-    //     return buildTree($firstArray[$key], $secondArray[$key]);
-    // }
+    $callback = function ($key) use ($firstArray, $secondArray) {
+        $value1 = $firstArray[$key] ?? null;
+        $value2 = $secondArray[$key] ?? null;
 
-    //сортировка по ключам
-    uksort($result, function ($a, $b) {
-        $a = trim($a, '+ -');
-        $b = trim($b, '+ -');
-        if ($a == $b) { // если 2 значения массива равны
-            return 0; // вернем 0
+        if (!array_key_exists($key, $firstArray)) {
+            return makeLeaf($key, 'added', $value2);
         }
-        return ($a < $b) ? -1 : 1;
-    });
-    return $result;
+        if (!array_key_exists($key, $secondArray)) {
+            return makeLeaf($key, 'removed', $value1);
+        }
+        if ($value1 === $value2) {
+            return makeLeaf($key, 'unchanged', $value1);
+        }
+        if (!is_array($value1) || !is_array($value2)) {
+            return makeLeaf($key, 'updated', $value1, $value2);
+        }
+
+        $result = buildTree($value1, $value2);
+
+        return makeNode($key, 'nested', $result);
+    };
+
+    sort($keys);
+    return array_map($callback, $keys);
 }
 
 function genDiff($firstFileName, $secondFileName, string $format = 'stylish'): string
 {
     if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
         echo "Неверные пути до файлов\n";
-        //return [];
     }
 //прочитать содержимое файлов в переменные
     $firstFileContent  = file_get_contents($firstFileName);
@@ -61,8 +86,6 @@ function genDiff($firstFileName, $secondFileName, string $format = 'stylish'): s
 
     $firstArray  = parse($firstFileContent, $firstFileExtension);
     $secondArray = parse($secondFileContent, $secondFileExtension);
-    //var_dump($firstArray);
-    //var_dump($secondArray);
 
     $tree = buildTree($firstArray, $secondArray);
     return format($tree, $format);

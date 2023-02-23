@@ -4,6 +4,7 @@ namespace Differ\Differ;
 
 use function Parsers\parse;
 use function Formatters\format;
+use function Functional\sort;
 
 function makeLeaf(string $key, string $type, mixed $value1, mixed $value2 = null): array
 {

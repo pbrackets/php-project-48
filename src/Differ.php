@@ -67,9 +67,9 @@ function buildTree(array $firstArray, array $secondArray): array
 
         return makeNode($key, 'nested', $result);
     };
-
-    sort($keys);
-    return array_map($callback, $keys);
+    $sortedKeys = sort($keys, fn ($left, $right) => strcmp($left, $right));
+    //sort($keys);
+    return array_map($callback, $sortedKeys);
 }
 
 function genDiff(string $firstFileName, string $secondFileName, string $format = 'stylish'): string

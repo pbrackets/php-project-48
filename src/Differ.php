@@ -28,7 +28,7 @@ function getValue2(array $node): mixed
 {
     return $node['value2'];
 }
-function getType($node): string
+function getType(array $node): string
 {
     return $node['type'];
 }

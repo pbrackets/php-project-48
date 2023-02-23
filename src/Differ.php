@@ -19,12 +19,12 @@ function getKey(array $node): string
 {
     return $node['key'];
 }
-function getValue1(array $node): string
+function getValue1(array $node): mixed
 {
     return $node['value1'];
 }
 
-function getValue2(array $node): string
+function getValue2(array $node): mixed
 {
     return $node['value2'];
 }

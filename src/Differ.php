@@ -5,7 +5,7 @@ namespace Differ\Differ;
 use function Parsers\parse;
 use function Formatters\format;
 
-function makeLeaf(string $key, string $type, $value1, $value2 = null): array
+function makeLeaf(string $key, string $type, mixed $value1, mixed $value2 = null): array
 {
     return ['key' => $key, 'type' => $type, 'value1' => $value1, 'value2' => $value2];
 }
@@ -15,16 +15,16 @@ function makeNode(string $key, string $type, array $children): array
     return ['key' => $key, 'type' => $type, 'children' => $children];
 }
 
-function getKey($node)
+function getKey(array $node): string
 {
     return $node['key'];
 }
-function getValue1($node)
+function getValue1(array $node): string
 {
     return $node['value1'];
 }
 
-function getValue2($node)
+function getValue2(array $node): string
 {
     return $node['value2'];
 }
@@ -33,7 +33,7 @@ function getType($node): string
     return $node['type'];
 }
 
-function getChildren($node)
+function getChildren(array $node): array
 {
     return $node['children'];
 }
@@ -71,7 +71,7 @@ function buildTree(array $firstArray, array $secondArray): array
     return array_map($callback, $keys);
 }
 
-function genDiff($firstFileName, $secondFileName, string $format = 'stylish'): string
+function genDiff(string $firstFileName, string $secondFileName, string $format = 'stylish'): string
 {
     if (!file_exists($firstFileName) || !file_exists($secondFileName)) {
         echo "Неверные пути до файлов\n";

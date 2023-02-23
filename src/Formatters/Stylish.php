@@ -12,7 +12,7 @@ function wrapStrings(array $tree, string $prefix): string
 {
     return "{\n" . implode("\n", $tree) . "\n" . $prefix . "}";
 }
-function toString($node, int $level): string
+function toString(mixed $node, int $level): string
 {
     if (!is_array($node)) {
         return is_null($node) ? "null" : trim(var_export($node, true), "'");
@@ -28,7 +28,7 @@ function toString($node, int $level): string
     return wrapStrings($tree, $prefix);
 }
 
-function PrintResultStylish($data, int $level = 0): string
+function PrintResultStylish(array $data, int $level = 0): string
 {
     $prefix = str_repeat("    ", $level);
 

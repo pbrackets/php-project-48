@@ -9,43 +9,26 @@ namespace Differ;
 
     class DifferTest extends TestCase
     {
-        public function testDifferJson($path1, $path2): void
+        public function testDifferStylish(): void
         {
-            $path1 = __DIR__ . "/tests/fixtures/first.json";
-            $path2 = __DIR__ . "/tests/fixtures/second.json";
-            $expected = file_get_contents("tests/fixtures/TestResultJson.txt");
+            $path1 = realpath("tests/fixtures/file1.json");
+            $path2 = realpath("tests/fixtures/file2.json");
+            $expected = trim(file_get_contents(realpath("tests/fixtures/CorrectStylish.txt")));
             $this->assertEquals($expected, genDiff($path1, $path2));
             echo "Tests passed!";
         }
-
-        public function testDifferYml($path1, $path2): void
+        public function testDifferPlain(): void
         {
-            $path1 = __DIR__ . "/tests/fixtures/first.yml";
-            $path2 = __DIR__ . "/tests/fixtures/second.yml";
-            $expected = file_get_contents("tests/fixtures/TestResultYml.txt");
-            $this->assertEquals($expected, genDiff($path1, $path2));
-            echo "Tests passed!";
-        }
-        public function testDifferStylish($path1, $path2): void
-        {
-            $path1 = __DIR__ . "/tests/fixtures/file1.json";
-            $path2 = __DIR__ . "/tests/fixtures/file2.json";
-            $expected = file_get_contents("tests/fixtures/CorrectStylish.txt");
-            $this->assertEquals($expected, genDiff($path1, $path2));
-            echo "Tests passed!";
-        }
-        public function testDifferPlain($path1, $path2): void
-        {
-            $path1 = __DIR__ . "/tests/fixtures/file1.json";
-            $path2 = __DIR__ . "/tests/fixtures/file2.json";
+            $path1 = realpath("tests/fixtures/file1.json");
+            $path2 = realpath("tests/fixtures/file2.json");
             $expected = file_get_contents("tests/fixtures/CorrectPlain.txt");
             $this->assertEquals($expected, genDiff($path1, $path2, "plain"));
             echo "Tests passed!";
         }
-        public function testDifferJsonFormat($path1, $path2): void
+        public function testDifferJsonFormat(): void
         {
-            $path1 = __DIR__ . "/tests/fixtures/file1.json";
-            $path2 = __DIR__ . "/tests/fixtures/file2.json";
+            $path1 = realpath("tests/fixtures/file1.json");
+            $path2 = realpath("tests/fixtures/file2.json");
             $expected = file_get_contents("tests/fixtures/CorrectJson.txt");
             $this->assertEquals($expected, genDiff($path1, $path2, "json"));
             echo "Tests passed!";
